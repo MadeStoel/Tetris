@@ -1,6 +1,6 @@
 document.addEventListener('keydown', (event) => {
 
-    var allowMove = true;
+    var allowMove = !currentPiece.locked;
 
     switch (event.key) {
         case 'ArrowRight':
@@ -23,6 +23,18 @@ document.addEventListener('keydown', (event) => {
             }
 
             if (allowMove) currentPiece.xPos--;
+            break;
+
+        case 'ArrowDown':
+            currentPiece.yPos++;
+            break;
+
+        case 'x':
+            currentPiece.turnClockWise();
+            break;
+
+        case 'z':
+            currentPiece.turnCounterClockWise();
             break;
 
         default:

@@ -1,6 +1,6 @@
 class TPiece extends Piece {
-    constructor(xPos, yPos) {
-        super(xPos, yPos);
+    constructor() {
+        super();
 
         this.colorValue = 1;
         this.shapeSize = 3;
@@ -10,5 +10,13 @@ class TPiece extends Piece {
             [ 1, 1, 1 ],
             [ 0, 0, 0 ],
         ];
+    }
+
+    turnClockWise() {
+      this.shape = super.turnClockWise(this.shape);
+    }
+
+    turnCounterClockWise() {
+      this.shape = super.turnCounterClockWise(this.shape);
     }
 }

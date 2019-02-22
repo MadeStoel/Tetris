@@ -4,6 +4,8 @@ const ctx = canvas.getContext('2d');
 const draw = new Draw();
 const arena = new Arena();
 
+debugging = false;
+
 let lastTime = 0;
 let pieceActive = false;
 
@@ -13,7 +15,9 @@ update = function (time = 0) {
     checkForActivePiece();
 
     const deltaTime = time - lastTime;
-    if (deltaTime > 600) {
+    if (deltaTime > 500) {
+
+        arena.checkCollision(currentPiece);
         currentPiece.yPos++;
 
         arena.update(currentPiece);
@@ -21,12 +25,20 @@ update = function (time = 0) {
 
         lastTime = time;
     }
-    requestAnimationFrame(update);
+
+    if(!debugging) {
+        requestAnimationFrame(update);
+    } else {
+        console.table(arena.grid);
+    }
 };
 
 checkForActivePiece = function () {
     if (!pieceActive) {
-        currentPiece = new Piece();
+        currentPiece = new TPiece();
+
+        arena.update(currentPiece);
+        draw.arena(arena);
         pieceActive = true;
     }
 };

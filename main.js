@@ -93,12 +93,9 @@ checkForActivePiece = function () {
 
         gameOver = arena.checkForGameOver();
 
-        console.log('current: ', currentPieceBag);
-        console.log('next: ', nextPieceBag);
         currentPiece = currentPieceBag.shift();
 
         arena.update(currentPiece);
-
         draw.arena(arena);
 
         pieceActive = true;

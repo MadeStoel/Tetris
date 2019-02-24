@@ -4,21 +4,40 @@ document.addEventListener('keydown', (event) => {
 
     switch (event.key) {
         case 'ArrowRight':
-            for (let i = 0; i < currentPiece.shapeSize; i++) {
-                row = currentPiece.shape[i];
-                if (row[currentPiece.shapeSize - 1] > 0 && currentPiece.xPos + currentPiece.shapeSize >= 10) {
-                    allowMove = false;
+            outer: for (let i = 0; i < currentPiece.shapeSize; i++) {
+                for (let j = 0; j < currentPiece.shapeSize; j++) {
+                    if (currentPiece.shape[i][j] === 1) {
+                        //check right wall
+                        if (currentPiece.xPos + (j + 1) >= 10) allowMove = false;
+                    }
+
+                    //check for block on right
+                    const rightCell = arena.grid[currentPiece.yPos + i][currentPiece.xPos + j + 1];
+                    if (rightCell > 0 && rightCell < 9) {
+                        allowMove = false;
+
+                        break outer;
+                    }
                 }
             }
-
             if (allowMove) currentPiece.xPos++;
             break;
 
         case 'ArrowLeft':
-            for (let i = 0; i < currentPiece.shapeSize; i++) {
-                row = currentPiece.shape[i];
-                if (row[0] > 0 && currentPiece.xPos === 0) {
-                    allowMove = false;
+            outer: for (let i = 0; i < currentPiece.shapeSize; i++) {
+                for (let j = 0; j < currentPiece.shapeSize; j++) {
+                    if (currentPiece.shape[i][j] === 1) {
+                        //check left wall
+                        if (currentPiece.xPos + j <= 0) allowMove = false;
+
+                        //check for block on left
+                        const leftCell = arena.grid[currentPiece.yPos + i][currentPiece.xPos + j - 1];
+                        if (leftCell > 0 && leftCell < 9) {
+
+                            allowMove = false;
+                            break outer;
+                        }
+                    }
                 }
             }
 
@@ -26,6 +45,7 @@ document.addEventListener('keydown', (event) => {
             break;
 
         case 'ArrowDown':
+            arena.checkCollision(currentPiece);
             currentPiece.yPos++;
             break;
 

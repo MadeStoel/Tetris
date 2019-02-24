@@ -13,7 +13,7 @@ update = function (time = 0) {
     checkForActivePiece();
 
     const deltaTime = time - lastTime;
-    if (deltaTime > 400) {
+    if (deltaTime > 800) {
 
         arena.checkCollision(currentPiece);
         currentPiece.yPos++;
@@ -33,6 +33,7 @@ checkForActivePiece = function () {
 
         arena.update(currentPiece);
         draw.arena(arena);
+
         pieceActive = true;
     }
 };

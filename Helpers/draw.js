@@ -1,8 +1,13 @@
 class Draw {
     colorMap = Object.assign({}, {
         0: 'black',
-        1: 'red',
-        9: 'hotpink'
+        1: 'purple', // T-piece
+        2: 'blue', // J-piece
+        3: 'cyan', // I-piece
+        4: 'orange', // L-piece
+        5: 'green', // S-piece
+        6: 'red',  // Z-piece
+        7: 'yellow', // O-piece
     });
 
     constructor() {
@@ -18,7 +23,7 @@ class Draw {
     };
 
     cell = function (x, y, colorKey) {
-        if(colorKey === 9) {
+        if (colorKey === 9) {
             colorKey = currentPiece.colorValue;
         }
         ctx.fillStyle = this.colorMap[colorKey];

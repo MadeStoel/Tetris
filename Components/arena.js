@@ -3,18 +3,15 @@ class Arena {
         this.xPos = 10;
         this.yPos = 20;
 
-        this.grid = this.initGrid();
+        this.grid = this.initGrid(this.xPos, this.yPos = 20);
 
     }
 
-    initGrid = function () {
-        const grid = {};
+    initGrid = function (x, y) {
+        const grid = [];
 
-        for (let i = 0; i < this.yPos; i++) {
-            grid[i] = [];
-            for (let j = 0; j < this.xPos; j++) {
-                grid[i][j] = 0;
-            }
+        while (y--) {
+            grid[y] = new Array(x).fill(0);
         }
 
         return grid;
@@ -22,6 +19,17 @@ class Arena {
 
     update = function (piece) {
         this.positionActivePiece(piece);
+    };
+
+    checkForCompletedRows = function () {
+        this.grid.forEach((row, index) => {
+            const completed = row.every(value => {return value > 0 && value < 9});
+
+            if(completed) {
+                this.grid.splice(index, 1);
+                this.grid.unshift(new Array(this.xPos).fill(0));
+            }
+        })
     };
 
     checkCollision = function (piece) {

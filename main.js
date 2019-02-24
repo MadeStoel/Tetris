@@ -1,6 +1,3 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-
 const draw = new Draw();
 const score = new Score();
 const dom = new Dom();
@@ -17,14 +14,19 @@ let pieceActive = false;
 let gameOver = false;
 let totalLines;
 
-const pieceBag = ['j', 'l', 's', 'z', 't', 'i', 'o'];
+const defaultPieceBag = ['j', 'l', 's', 'z', 't', 'i', 'o'];
 let currentPieceBag = [];
+let nextPieceBag = [];
+
 let currentPiece;
 
 update = function (time = 0) {
+    checkPieceBag();
     checkForActivePiece();
 
     const deltaTime = time - lastTime;
+
+    //TODO refactor timer so it can be reset.
     if (deltaTime > (gameSpeed - (gameLevel * 100))) {
 
         arena.checkCollision(currentPiece);
@@ -44,6 +46,40 @@ update = function (time = 0) {
     }
 };
 
+checkPieceBag = function () {
+    if (currentPieceBag.length === 0) {
+        if (nextPieceBag.length === 0) {
+            nextPieceBag = shufflePieceBag(defaultPieceBag.slice());
+            nextPieceBag = instantiatePieceBag(nextPieceBag);
+        }
+
+        currentPieceBag = nextPieceBag.slice();
+        nextPieceBag = shufflePieceBag(defaultPieceBag.slice());
+        nextPieceBag = instantiatePieceBag(nextPieceBag);
+    }
+};
+
+instantiatePieceBag = function (pieceBag) {
+    const result = [];
+    for (const piece of pieceBag) {
+        result.push(getNewPiece(piece));
+    }
+
+    return result;
+};
+
+shufflePieceBag = function (pieceBag) {
+    let j, x;
+    for (let i = pieceBag.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = pieceBag[i];
+        pieceBag[i] = pieceBag[j];
+        pieceBag[j] = x;
+    }
+    return pieceBag;
+
+};
+
 checkForActivePiece = function () {
     if (!pieceActive) {
         const completedRows = arena.checkForCompletedRows();
@@ -57,7 +93,9 @@ checkForActivePiece = function () {
 
         gameOver = arena.checkForGameOver();
 
-        currentPiece = getNewPiece();
+        console.log('current: ', currentPieceBag);
+        console.log('next: ', nextPieceBag);
+        currentPiece = currentPieceBag.shift();
 
         arena.update(currentPiece);
 
@@ -77,14 +115,7 @@ addLinesCleared = function (completedRows) {
     }
 };
 
-getNewPiece = function () {
-    if (currentPieceBag.length === 0) {
-        currentPieceBag = pieceBag.slice();
-    }
-
-    const randomNum = Math.floor(Math.random() * currentPieceBag.length);
-    selectedPiece = currentPieceBag.splice(randomNum, 1)[0];
-
+getNewPiece = function (selectedPiece) {
     switch (selectedPiece) {
         case 'j': {
             return new JPiece();

@@ -1,9 +1,9 @@
 class Arena {
     constructor() {
-        this.xPos = 10;
-        this.yPos = 20;
+        this.width = 10;
+        this.height = 20;
 
-        this.grid = this.initGrid(this.xPos, this.yPos = 20);
+        this.grid = this.initGrid(this.width, this.height);
 
     }
 
@@ -31,7 +31,7 @@ class Arena {
 
             if (completed) {
                 this.grid.splice(index, 1);
-                this.grid.unshift(new Array(this.xPos).fill(0));
+                this.grid.unshift(new Array(this.width).fill(0));
 
                 completedRows++;
             }
@@ -46,7 +46,7 @@ class Arena {
                 if (piece.shape[i][j] === 1) {
 
                     //Bottom of the screen
-                    if (piece.yPos + i >= this.yPos - 1) {
+                    if (piece.yPos + i >= this.height - 1) {
                         this.lockPiece(piece);
                         return;
                     }
@@ -65,8 +65,8 @@ class Arena {
 
     positionActivePiece = function (piece) {
         //Reset last position
-        for (let i = 0; i < this.yPos; i++) {
-            for (let j = 0; j < this.xPos; j++) {
+        for (let i = 0; i < this.height; i++) {
+            for (let j = 0; j < this.width; j++) {
                 if (this.grid[i][j] === 9) {
                     this.grid[i][j] = 0;
                 }

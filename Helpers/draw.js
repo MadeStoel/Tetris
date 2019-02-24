@@ -1,3 +1,6 @@
+const gameWindow = document.getElementById('game-window');
+const gameWindowCtx = gameWindow.getContext('2d');
+
 class Draw {
     colorMap = Object.assign({}, {
         0: 'black',
@@ -15,8 +18,8 @@ class Draw {
     }
 
     arena = function (arena) {
-        for (let y = 0; y < arena.yPos; y++) {
-            for (let x = 0; x < arena.xPos; x++) {
+        for (let y = 0; y < arena.height; y++) {
+            for (let x = 0; x < arena.width; x++) {
                 this.cell(x, y, arena.grid[y][x]);
             }
         }
@@ -26,7 +29,7 @@ class Draw {
         if (colorKey === 9) {
             colorKey = currentPiece.colorValue;
         }
-        ctx.fillStyle = this.colorMap[colorKey];
-        ctx.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
+        gameWindowCtx.fillStyle = this.colorMap[colorKey];
+        gameWindowCtx.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
     };
 }

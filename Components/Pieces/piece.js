@@ -6,6 +6,7 @@ class Piece {
       this.locked = false;
   }
 
+  //TODO check for walls/blocks where the rotation ends.
   turnClockWise(shape) {
       let result = [];
       for(let i = 0; i < shape[0].length; i++) {

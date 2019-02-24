@@ -9,14 +9,14 @@ document.addEventListener('keydown', (event) => {
                     if (currentPiece.shape[i][j] === 1) {
                         //check right wall
                         if (currentPiece.xPos + (j + 1) >= 10) allowMove = false;
-                    }
 
-                    //check for block on right
-                    const rightCell = arena.grid[currentPiece.yPos + i][currentPiece.xPos + j + 1];
-                    if (rightCell > 0 && rightCell < 9) {
-                        allowMove = false;
+                        //check for block on right
+                        const rightCell = arena.grid[currentPiece.yPos + i][currentPiece.xPos + j + 1];
+                        if (rightCell > 0 && rightCell < 9) {
+                            allowMove = false;
 
-                        break outer;
+                            break outer;
+                        }
                     }
                 }
             }
@@ -47,6 +47,8 @@ document.addEventListener('keydown', (event) => {
         case 'ArrowDown':
             arena.checkCollision(currentPiece);
             currentPiece.yPos++;
+
+
             break;
 
         case 'x':
@@ -55,6 +57,10 @@ document.addEventListener('keydown', (event) => {
 
         case 'z':
             currentPiece.turnCounterClockWise();
+            break;
+
+        case 'r':
+            newGame();
             break;
 
         default:

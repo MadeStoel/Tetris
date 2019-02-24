@@ -8,8 +8,16 @@
 <body>
 
     <canvas id="canvas" width="400" height="800"></canvas>
+    <button onclick="newGame()">New game (R)</button>
+    <div>
+        <p id="level"></p>
+    </div>
+
+    <p id="score"></p>
 
     <script src="Helpers/draw.js"></script>
+    <script src="Helpers/dom.js"></script>
+    <script src="Helpers/score.js"></script>
     <script src="Components/arena.js"></script>
     <script src="Components/Pieces/piece.js"></script>
     <script src="Components/Pieces/j_piece.js"></script>
@@ -19,7 +27,7 @@
     <script src="Components/Pieces/i_piece.js"></script>
     <script src="Components/Pieces/t_piece.js"></script>
     <script src="Components/Pieces/o_piece.js"></script>
-    <script src="Components/player.js"></script>
+    <script src="Components/input.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

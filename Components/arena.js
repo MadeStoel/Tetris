@@ -22,14 +22,22 @@ class Arena {
     };
 
     checkForCompletedRows = function () {
-        this.grid.forEach((row, index) => {
-            const completed = row.every(value => {return value > 0 && value < 9});
+        let completedRows = 0;
 
-            if(completed) {
+        this.grid.forEach((row, index) => {
+            const completed = row.every(value => {
+                return value > 0 && value < 9
+            });
+
+            if (completed) {
                 this.grid.splice(index, 1);
                 this.grid.unshift(new Array(this.xPos).fill(0));
+
+                completedRows++;
             }
-        })
+        });
+
+        if (completedRows > 0) return completedRows;
     };
 
     checkCollision = function (piece) {
@@ -73,6 +81,10 @@ class Arena {
                 }
             }
         }
+    };
+
+    checkForGameOver = function () {
+        return (this.grid[0][4] !== 0 || this.grid[0][5] !== 0);
     };
 
     lockPiece = function (piece) {

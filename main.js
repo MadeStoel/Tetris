@@ -2,12 +2,22 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const draw = new Draw();
-const arena = new Arena();
+const score = new Score();
+const dom = new Dom();
+
+let arena;
 
 let lastTime = 0;
+let gameSpeed = 1100;
+let gameLevel;
+const maxLevel = 9;
+
 let pieceActive = false;
 
-const pieceBag = ['j', 'l', 's', 'z', 't',  'i', 'o'];
+let gameOver = false;
+let totalLines;
+
+const pieceBag = ['j', 'l', 's', 'z', 't', 'i', 'o'];
 let currentPieceBag = [];
 let currentPiece;
 
@@ -15,7 +25,7 @@ update = function (time = 0) {
     checkForActivePiece();
 
     const deltaTime = time - lastTime;
-    if (deltaTime > 800) {
+    if (deltaTime > (gameSpeed - (gameLevel * 100))) {
 
         arena.checkCollision(currentPiece);
         currentPiece.yPos++;
@@ -26,15 +36,28 @@ update = function (time = 0) {
         lastTime = time;
     }
 
-    requestAnimationFrame(update);
+
+    if (!gameOver) {
+        requestAnimationFrame(update);
+    } else {
+        console.log('game over!');
+    }
 };
 
 checkForActivePiece = function () {
     if (!pieceActive) {
-        arena.checkForCompletedRows();
+        const completedRows = arena.checkForCompletedRows();
+
+        if (completedRows > 0) {
+            addLinesCleared(completedRows);
+
+            score.add(completedRows, gameLevel);
+            score.updateScore();
+        }
+
+        gameOver = arena.checkForGameOver();
 
         currentPiece = getNewPiece();
-        console.log(currentPiece);
 
         arena.update(currentPiece);
 
@@ -44,15 +67,25 @@ checkForActivePiece = function () {
     }
 };
 
+addLinesCleared = function (completedRows) {
+    totalLines += completedRows;
+
+    if (gameLevel < maxLevel) {
+        gameLevel = Math.floor(totalLines / 10) + 1;
+
+        dom.updateLevel(gameLevel);
+    }
+};
+
 getNewPiece = function () {
-    if(currentPieceBag.length === 0) {
+    if (currentPieceBag.length === 0) {
         currentPieceBag = pieceBag.slice();
     }
 
     const randomNum = Math.floor(Math.random() * currentPieceBag.length);
     selectedPiece = currentPieceBag.splice(randomNum, 1)[0];
 
-    switch (selectedPiece){
+    switch (selectedPiece) {
         case 'j': {
             return new JPiece();
         }
@@ -80,4 +113,20 @@ getNewPiece = function () {
     }
 };
 
-update();
+newGame = function () {
+    arena = new Arena();
+    pieceActive = false;
+    gameOver = false;
+
+    gameLevel = 1;
+    totalLines = 0;
+
+    score.total = 0;
+    score.updateScore();
+
+    dom.updateLevel(gameLevel);
+
+    update();
+};
+
+newGame();
